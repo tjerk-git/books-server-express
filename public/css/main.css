@@ -1,0 +1,22 @@
+*{
+  margin:0;
+  padding:0;
+}
+
+.post{
+  border: 1px solid grey;
+  padding:3rem;
+  margin:1rem;
+  border-radius: 1rem;
+  color:black;
+
+}
+
+.newPost{
+  transition: all 1s ease-in;
+}
+
+.htmx-swapping {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}

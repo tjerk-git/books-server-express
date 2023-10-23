@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog boiii</title>
-
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/pico.css">
   </head>
 
   <body>
-    <div hx-get="/api/posts" id="posts" hx-trigger="load">Get Some HTML</div>
+    <main class="container">
 
+      <form hx-post="/api/books/new/" hx-swap="afterend" hx-target="#posts">
+        <input type="text" name="title">
+        <input type="text" name="body">
+        <input type="submit">
+      </form>
+
+      <div hx-get="/api/posts" id="posts" hx-trigger="load">
+
+      </div>
+
+    </main>
     <script src="js/htmx.min.js"></script>
-
   </body>
 
 </html>
