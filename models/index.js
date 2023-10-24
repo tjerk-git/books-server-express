@@ -8,11 +8,7 @@ const sequelize = new Sequelize({
 
 // Define your model
 const Post = sequelize.define('Post', {
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  body: {
+  emoji: {
     type: DataTypes.STRING,
     allowNull: false,
   },

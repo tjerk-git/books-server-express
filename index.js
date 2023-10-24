@@ -1,6 +1,8 @@
 const { Post } = require('./models');
 const express = require('express')
+const z = require("zod");
 const app = express()
+
 
 app.use(require('body-parser').urlencoded({ extended: false }));
 
@@ -9,9 +11,8 @@ app.use(express.static('public'));
 const postTemplate = (post) => {
   return `
     <div class="post">
-      <h2>${post.title}</h2>
-      <button hx-delete="/api/books/${post.id}" hx-target=".post" hx-confirm="Are you sure you want to delete this post?" hx-swap="outerHTML swap:1s">Delete</button>
-      <p>${post.body}</p>
+      <h2>${post.emoji}</h2>
+      <button class="is-danger button" hx-delete="/api/books/${post.id}" hx-target=".post" hx-confirm="Are you sure you want to delete this post?" hx-swap="outerHTML swap:1s">Delete</button>
     </div>
   `;
 };
@@ -38,23 +39,44 @@ app.get('/api/posts', async (req, res) => {
 app.delete('/api/books/:id', async (req, res) => {
   const { id } = req.params;
   await Post.destroy({ where: { id } });
-  res.send(`<h1>Post has been deleted</h1>`);
+  res.send(`<div class="notification is-danger"><h1>Post has been deleted</h1></div>`);
 })
 
 
 app.post('/api/books/new', async (req, res) => {
 
-  const { title, body } = req.body;
+  const { emoji } = req.body;
 
-  const post = await Post.create({
-    title,
-    body
-  });
+  const mySchema = z.string().emoji({ message: "Contains non-emoji characters" }).max(3);
 
-  let htmlResponse = ``;
-  htmlResponse += postTemplate(post);
+  const validation = mySchema.safeParse(emoji);
 
-  res.send(htmlResponse);
+
+  if (validation.success) {
+    const post = await Post.create({
+      emoji,
+    });
+
+    let htmlResponse = ``;
+    htmlResponse += postTemplate(post);
+    res.send(htmlResponse);
+  } else {
+    const {
+      issues: [{
+        message
+      }]
+    } = validation.error;
+
+    let errorResponse = `
+      <div class="notification is-danger">
+        <h1>Error</h1>
+        <p>${message}</p>
+      </div>
+    `;
+
+    res.send(errorResponse);
+  }
+
 });
 
 

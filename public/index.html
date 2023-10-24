@@ -6,17 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog boiii</title>
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/pico.css">
   </head>
 
   <body>
     <main class="container">
 
-      <form hx-post="/api/books/new/" hx-swap="afterend" hx-target="#posts">
-        <input type="text" name="title">
-        <input type="text" name="body">
-        <input type="submit">
+      <form hx-post="/api/books/new/" hx-target="#posts" hx-swap="afterbegin" class="form">
+        <div class="field">
+          <label class="label">Emoji</label>
+          <div class="control">
+            <input class="input" name="emoji" type="text" placeholder="Text input">
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <button class="button is-primary">Submit</button>
+          </div>
+        </div>
       </form>
+
+
 
       <div hx-get="/api/posts" id="posts" hx-trigger="load">
 
